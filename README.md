@@ -1,5 +1,3 @@
-# KiraOps-AI-Intelligent-DevOps-AIOps-Platform
-
 # KiraOps-AI — Intelligent DevOps & AIOps Platform
 
 A full end-to-end DevOps project with AIOps integration — connecting the dots between modern cloud operations, continuous delivery, and artificial intelligence.
