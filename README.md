@@ -18,42 +18,34 @@ The project explores how modern engineering teams can automate application deliv
 - **Centralized Logging:** Forward operational logs to AWS CloudWatch using Fluent Bit.
 - **AI-Powered Operations:** Integrate AWS Bedrock to support intelligent troubleshooting and operational analysis.
 
+
 ## Architecture Overview
 
-```text
-Developer
-    |
-    v
-GitHub Repository
-    |
-    v
-GitHub Actions (CI/CD)
-    |
-    v
-Docker Images → AWS ECR
-    |
-    v
-AWS EKS (Kubernetes)
-    |
-    v
-Microservices Application
-    |
-    +------> Prometheus + Grafana
-    |
-    +------> Fluent Bit → CloudWatch
-                         |
-                         v
-                    AWS Bedrock
-                         |
-                         v
-                    Kira (AIOps)
-                         |
-                         v
-              AI-Assisted Analysis
-              and Troubleshooting
+```mermaid
+flowchart TD
+    A["Developer"] --> B["GitHub Repository"]
+    B --> C["GitHub Actions<br/>CI Pipeline"]
+    C --> D["Build & Test"]
+    D --> E["Docker Image"]
+    E --> F["Amazon ECR"]
+    F --> G["ArgoCD<br/>GitOps"]
+    G --> H["Amazon EKS"]
+    
+    H --> I["Frontend Service"]
+    H --> J["Backend Service"]
+    H --> K["PostgreSQL"]
+
+    H --> L["Prometheus"]
+    L --> M["Grafana"]
+
+    H --> N["Fluent Bit"]
+    N --> O["Amazon CloudWatch"]
+
+    O --> P["AWS Bedrock"]
+    P --> Q["Kira AI Assistant"]
+    Q --> R["AI-assisted<br/>Log Analysis & RCA"]
 ```
 
-*This represents the intended architecture; individual integrations are subject to implementation and testing.*
 
 ## Technology Stack
 
