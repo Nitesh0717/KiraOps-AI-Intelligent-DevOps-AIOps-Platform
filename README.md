@@ -1,160 +1,163 @@
-# DevOps + AIOps Series
+# KiraOps — Intelligent DevOps & AIOps Platform
 
-> A full end-to-end DevOps project with AIOps integration — so you can connect the dots between how AI is helping automate DevOps tasks today.
+> **Building smarter infrastructure through DevOps automation and AI-powered operations.**
 
----
+KiraOps is an end-to-end cloud-native DevOps and AIOps platform that combines microservices, containerization, Kubernetes, CI/CD, GitOps, observability, and artificial intelligence.
 
-## Welcome
+The project explores how modern engineering teams can automate application delivery, monitor infrastructure, investigate operational issues, and use AI to improve system reliability.
 
-Hey everyone!
+## Key Features
 
-Welcome to my DevOps + AI series where we build an end-to-end DevOps project with an AIOps integration.
+- **Microservices Architecture:** Build and manage independent application services.
+- **Containerization:** Package applications using Docker and Docker Compose.
+- **Kubernetes Deployment:** Orchestrate workloads using AWS EKS.
+- **Infrastructure as Code:** Provision AWS infrastructure using Terraform.
+- **CI/CD Automation:** Automate build and validation workflows using GitHub Actions.
+- **GitOps:** Manage Kubernetes deployments using ArgoCD and Kustomize.
+- **Monitoring:** Collect and visualize metrics using Prometheus and Grafana.
+- **Centralized Logging:** Forward operational logs to AWS CloudWatch using Fluent Bit.
+- **AI-Powered Operations:** Integrate AWS Bedrock to support intelligent troubleshooting and operational analysis.
 
-A lot of you have been asking: *"when are you going to share a full DevOps project?"*
+## Architecture Overview
 
-Well — here we are.
+```text
+Developer
+    |
+    v
+GitHub Repository
+    |
+    v
+GitHub Actions (CI/CD)
+    |
+    v
+Docker Images → AWS ECR
+    |
+    v
+AWS EKS (Kubernetes)
+    |
+    v
+Microservices Application
+    |
+    +------> Prometheus + Grafana
+    |
+    +------> Fluent Bit → CloudWatch
+                         |
+                         v
+                    AWS Bedrock
+                         |
+                         v
+                    Kira (AIOps)
+                         |
+                         v
+              AI-Assisted Analysis
+              and Troubleshooting
+```
 
-In this series we will:
+*This represents the intended architecture; individual integrations are subject to implementation and testing.*
 
-- Build microservices locally
-- Use Claude and AI tools to assist development
-- Deploy everything step by step
-- Migrate the system to the cloud on AWS EKS
-- Set up a full CI/CD pipeline with GitHub Actions
-- Implement GitOps workflows with ArgoCD
-- Integrate AIOps capabilities with AWS Bedrock
+## Technology Stack
 
-By the end of this series, you won't just know tools — you'll understand how real DevOps systems are designed and deployed.
+| Layer | Technologies |
+|---|---|
+| Frontend | React |
+| Backend | Node.js |
+| Database | PostgreSQL |
+| Containers | Docker, Docker Compose |
+| Orchestration | Kubernetes, AWS EKS |
+| Infrastructure | Terraform |
+| Container Registry | AWS ECR |
+| CI/CD | GitHub Actions |
+| GitOps | ArgoCD, Kustomize |
+| Monitoring | Prometheus, Grafana |
+| Logging | Fluent Bit, AWS CloudWatch |
+| AIOps | AWS Bedrock |
+| AI Development | Claude Code, MCP Servers |
 
----
+## Kira — AI Operations Assistant
+
+Kira is the AIOps component of KiraOps, designed to bring AI-assisted intelligence into DevOps workflows.
+
+Its intended capabilities include:
+
+- Operational log analysis.
+- Anomaly investigation.
+- Incident troubleshooting.
+- Root cause analysis assistance.
+- Remediation recommendations.
+- AI-assisted incident response.
+
+The long-term goal is to evolve Kira into an intelligent operations assistant that can analyze operational signals, recommend actions, and support verified remediation workflows with human oversight.
 
 ## Repository Structure
 
-```
-DevOps-Practice-Guide/
+```text
+KiraOps/
+├── .github/
+│   └── workflows/
 ├── docs/
-│   ├── part1-system-design.md     # System design foundations (Part 1)
-│   ├── part2-workflow.md          # Full workflow with AIOps (Part 2)
-│   └── claude-setup.md            # Claude Code + MCP server setup
 ├── projects/
-│   ├── README.md                  # EKS deployment guide (Part 3)
-│   ├── boutique-microservices/    # The application (7 services)
-│   ├── Infrastructure/            # Terraform for AWS provisioning
-│   └── aiops-assistant/           # Bedrock Agent — Kira (Part 4)
+│   ├── boutique-microservices/
+│   ├── Infrastructure/
+│   └── aiops-assistant/
 ├── gitops/
-│   ├── argo-cd.yml                # ArgoCD Application manifest
-│   ├── kustomization.yml          # Kustomize entry point
-│   └── k8s/                       # All Kubernetes manifests
-└── .github/
-    └── workflows/ci.yml           # GitHub Actions CI pipeline
+│   ├── argo-cd.yml
+│   ├── kustomization.yml
+│   └── k8s/
+├── CLAUDE.md
+├── .gitignore
+└── README.md
 ```
 
----
+## Getting Started
 
-## Series Structure
+### Prerequisites
 
-### Claude Setup — AI Assistant Configuration
-[`docs/claude-setup.md`](docs/claude-setup.md)
+- Git
+- Docker and Docker Compose
+- Node.js
+- PostgreSQL
+- AWS CLI
+- Terraform
+- kubectl
+- AWS Account
 
-Before jumping into the project, this step walks through how Claude Code is configured as the AI assistant throughout this series.
+### Clone the Repository
 
-Three things are set up:
+```bash
+git clone https://github.com/Nitesh0717/KiraOps-AI-Intelligent-DevOps-AIOps-Platform.git
 
-**CLAUDE.md** — a project instruction file at the repo root that Claude reads automatically at the start of every session. It puts Claude in safe execution mode: explain what you're about to do and why before taking any action. This is important when working with live AWS infrastructure where silent commands can have real consequences.
+cd KiraOps-AI-Intelligent-DevOps-AIOps-Platform
+```
 
-**MCP Servers** — background processes that extend Claude's built-in capabilities. Four servers are configured in `~/.claude/settings.json`:
+Explore the application, infrastructure, GitOps, and AIOps directories for their respective setup and execution instructions.
 
-| Server | What it unlocks |
-|--------|----------------|
-| `awslabs.eks-mcp-server` | Query EKS clusters, inspect pods, stream logs, apply manifests |
-| `awslabs.terraform-mcp-server` | Run Terraform commands, search provider docs, run Checkov scans |
-| `awslabs.aws-pricing-mcp-server` | Live AWS pricing lookups and cost analysis reports |
-| `awslabs.core-mcp-server` | MCP orchestration layer (deprecated, kept for compatibility) |
+**Note:** Configure the required environment variables and AWS credentials before deployment. Never commit secrets or credentials to the repository.
 
-**Skills** — domain-specific knowledge packs that improve how Claude reasons about certain topics. The `terraform-skill` is installed, giving Claude deeper context for Terraform module patterns, testing strategies, security scanning, and CI/CD workflows specific to infrastructure-as-code.
+## Future Improvements
 
----
+- Advanced anomaly detection and log correlation.
+- Automated incident investigation and root cause analysis.
+- AI-assisted remediation with human approval.
+- SLO-based monitoring and alerting.
+- Incident timelines and postmortem generation.
+- Security automation and infrastructure optimization.
+- Cost monitoring and resource recommendations.
 
-### Part 1 — System Design Foundations
-[`docs/part1-system-design.md`](docs/part1-system-design.md)
+*These represent planned improvements and are not necessarily implemented features.*
 
-We start with system design concepts specifically for cloud and DevOps. This is important whether you're a beginner, intermediate, or senior engineer — because companies don't choose tools randomly. They think about architecture patterns, deployment strategies, scalability, reliability, and cost tradeoffs.
+## Project Vision
 
-We cover 12 core system design pillars used in modern DevOps architectures, and connect each one directly to something running in this project.
+KiraOps aims to bring DevOps automation and AI-driven operations together in a unified platform.
 
----
+The goal is to move beyond traditional deployment automation toward intelligent infrastructure management, faster troubleshooting, and more reliable cloud-native systems.
 
-### Part 2 — Understanding the Workflow
-[`docs/part2-workflow.md`](docs/part2-workflow.md)
+## Author
 
-Before writing any code or deployment configs, you need to understand how the entire system flows:
+**Nitesh**
 
-- What services we're building and how they communicate
-- How the pipeline works
-- How code moves from developer → CI → deployment → production → AIOps
-
-This is where the full picture comes together — including how AI fits into the workflow.
-
----
-
-### Part 3 — DevOps Project Implementation
-[`projects/README.md`](projects/README.md)
-
-Then we actually build the project. You'll see:
-
-- Docker containers and Docker Compose
-- Kubernetes deployments on EKS
-- CI/CD pipelines with GitHub Actions
-- GitOps automation with ArgoCD
-- Infrastructure provisioning with Terraform
-- Observability with Prometheus and Grafana
+- GitHub: [@Nitesh0717](https://github.com/Nitesh0717)
+- Repository: [KiraOps](https://github.com/Nitesh0717/KiraOps-AI-Intelligent-DevOps-AIOps-Platform)
 
 ---
 
-### Part 4 — AIOps Integration
-[`projects/aiops-assistant/README.md`](projects/aiops-assistant/README.md)
-
-Finally, we explore how AI helps with:
-
-- Monitoring and anomaly detection
-- Log analysis at scale
-- Incident response automation
-- DevOps troubleshooting
-
-Because modern DevOps is no longer just automation — it's **automation + intelligence**.
-
----
-
-## Bonus Challenge
-
-You'll get access to this entire repository.
-
-But there's a catch.
-
-The repository includes **intentional issues and troubleshooting tasks**.
-
-Why? Because AI has made things easier. But if you want to grow as an engineer, you must learn how to break systems, debug systems, and fix systems.
-
-Once you implement the project:
-
-1. Fork the repository
-2. Deploy the system
-3. Troubleshoot the issues
-4. Share what you learned — and tag me so I know you're building along
-
----
-
-## Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| Application | React, Node.js, PostgreSQL |
-| Containers | Docker, Docker Compose |
-| Orchestration | Kubernetes (AWS EKS) |
-| Infrastructure | Terraform |
-| CI/CD | GitHub Actions |
-| GitOps | ArgoCD + Kustomize |
-| Monitoring | Prometheus + Grafana |
-| Log Forwarding | AWS Fluent Bit → CloudWatch |
-| AIOps | AWS Bedrock Agent (Kira) |
-| AI Assistant | Claude Code + MCP Servers |
+**KiraOps — Automate. Observe. Analyze. Improve.**
